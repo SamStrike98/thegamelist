@@ -10,7 +10,7 @@ const Navbar = async () => {
     <div className='w-full flex flex-row fixed items-center justify-center bg-teal-400 '>
         <div className='container flex flex-row items-center justify-between px-[10px]'>
             <Image src={'/logo.png'} alt='logo' width={250} height={250} className='w-[100px] h-[100px]'/>
-            <div className='flex flex-row'>{!session?.user ? <LoginGoogle /> :<> {session?.user?.name} <Image src={session.user.image} className='rounded-full max-h-[30px]' width={30} height={30} alt="User Avatar"/> <Logout /></>}</div>
+            <div className='flex flex-row'>{!session?.user ? <LoginGoogle /> :<> {session?.user?.name} <Image src={session.user.image!} className='rounded-full max-h-[30px]' width={30} height={30} alt="User Avatar"/> <Logout /></>}</div>
         </div>
 
     </div>
