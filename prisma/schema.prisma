@@ -92,7 +92,7 @@ model Authenticator {
 model Game {
   id String @id @default(auto()) @map("_id") @db.ObjectId
   title String
-  notes String
+  notes String?
   platform String
   ownerId String @db.ObjectId
   owner User @relation(fields:[ownerId], references: [id])
