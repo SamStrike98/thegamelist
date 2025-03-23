@@ -3,7 +3,7 @@
 import { getGames, createGame, deleteGame } from "@/actions/gameActions";
 import { auth } from "@/auth";
 import LoginGoogle from "@/components/LoginGoogle";
-import Image from "next/image";
+// import Image from "next/image";
 
 export default async function Home({ searchParams }: { searchParams: { search?: string, platform?: string } }) {
   const session = await auth()
