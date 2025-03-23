@@ -1,6 +1,6 @@
 'use server'
 
-import { getGames, createGame, deleteGame } from "@/actions/gameActions";
+import { getUserGames, createGame, deleteGame } from "@/actions/gameActions";
 import { auth } from "@/auth";
 import LoginGoogle from "@/components/LoginGoogle";
 
@@ -19,7 +19,7 @@ export default async function Home({ searchParams }: SearchParams) {
   // const searchQuery = currSearchParams?.search ?? '';
   // const platformFilter = currSearchParams?.platform ?? '';
 
-  const games = await getGames(search, platform);
+  const games = await getUserGames(search, platform);
 
   return (
     <main>

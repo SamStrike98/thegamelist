@@ -47,6 +47,31 @@ export async function getGames(searchQuery?: string, platform?: string) {
   });
 }
 
+// Read logged in user's games
+// Read Games
+export async function getUserGames(searchQuery?: string, platform?: string) {
+    const session = await auth();
+    const userId = session?.user?.id
+
+  const where: Prisma.GameWhereInput = {ownerId: userId};
+
+  // Apply search filter
+  if (searchQuery) {
+    where.title = { contains: searchQuery, mode: "insensitive" };
+  }
+
+  // Apply platform filter if selected
+  if (platform) {
+    where.platform = platform;
+  }
+
+  return await db?.game.findMany({
+    where,
+    include: { owner: true },
+    orderBy: { createdAt: "desc" },
+  });
+}
+
 // Update Game
 export async function updateGame(id: string, formData: FormData) {
     const session = await auth();
