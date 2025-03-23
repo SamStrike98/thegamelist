@@ -1,6 +1,7 @@
 'use server'
 
 import { auth } from "@/auth"
+import { Prisma } from "@prisma/client";
 import { revalidatePath } from "next/cache"
 
 
@@ -8,11 +9,14 @@ import { revalidatePath } from "next/cache"
 export async function createGame(formData: FormData) {
     const session = await auth();
     if(!session?.user) throw new Error("Not authenticated")
+     
     
     const userId = session?.user?.id    
     const title = formData.get("title") as string;
     const notes = formData.get("notes") as string;
     const platform = formData.get("platform") as string;
+
+    if(!userId) throw new Error("UserId required")
 
     await prisma?.game.create({
         data: {title, notes, platform, ownerId: userId}
@@ -23,7 +27,7 @@ export async function createGame(formData: FormData) {
 
 // Read Games
 export async function getGames(searchQuery?: string, platform?: string) {
-  const where: any = {};
+  const where: Prisma.GameWhereInput = {};
 
   // Apply search filter
   if (searchQuery) {
