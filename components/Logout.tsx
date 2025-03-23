@@ -4,7 +4,7 @@ import { logout } from "@/actions/auth"
 
 const Logout = () => {
   return (
-    <div onClick={() => logout()}>
+    <div className="cursor-pointer" onClick={() => logout()}>
         <p>Logout</p>
     </div>
   )
