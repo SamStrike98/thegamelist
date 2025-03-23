@@ -5,7 +5,13 @@ import { auth } from "@/auth";
 import LoginGoogle from "@/components/LoginGoogle";
 // import Image from "next/image";
 
-export default async function Home({ searchParams }: { searchParams: Record<string, never> }) {
+// Define the shape of the expected searchParams
+interface SearchParams {
+  search?: string;
+  platform?: string;
+}
+
+export default async function Home({ searchParams }: { searchParams: SearchParams }) {
   const session = await auth()
   const currSearchParams = await searchParams;
 
