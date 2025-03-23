@@ -2,6 +2,7 @@
 
 import { auth } from "@/auth"
 import { Prisma } from "@prisma/client";
+import { db } from "@/db";
 import { revalidatePath } from "next/cache"
 
 
@@ -18,7 +19,7 @@ export async function createGame(formData: FormData) {
 
     if(!userId) throw new Error("UserId required")
 
-    await prisma?.game.create({
+    await db?.game.create({
         data: {title, notes, platform, ownerId: userId}
     });
 
@@ -39,7 +40,7 @@ export async function getGames(searchQuery?: string, platform?: string) {
     where.platform = platform;
   }
 
-  return await prisma?.game.findMany({
+  return await db?.game.findMany({
     where,
     include: { owner: true },
     orderBy: { createdAt: "desc" },
@@ -51,7 +52,7 @@ export async function updateGame(id: string, formData: FormData) {
     const session = await auth();
     if(!session?.user) throw new Error("Not authenticated");
 
-    const game = await prisma?.game.findUnique({ where: { id } });
+    const game = await db?.game.findUnique({ where: { id } });
     if(!game || game.ownerId !== session?.user?.id) {
         throw new Error("Unauthorised");
     }
@@ -60,7 +61,7 @@ export async function updateGame(id: string, formData: FormData) {
     const notes = formData.get("notes") as string;
     const platform = formData.get("platform") as string;
 
-    await prisma?.game.update({
+    await db?.game.update({
         where: { id },
         data: { title, notes, platform }
     });
@@ -74,13 +75,13 @@ export async function deleteGame(formData: FormData) {
     if(!session?.user) throw new Error("Not authenticated");
     const id = formData.get("gameId") as string;
 
-    const game = await prisma?.game.findUnique({ where: { id } });
+    const game = await db?.game.findUnique({ where: { id } });
     console.log(id)
     if(!game || game.ownerId !== session?.user?.id) {
         throw new Error("Unauthorised");
     }
 
-    await prisma?.game?.delete({ where: { id } });
+    await db?.game?.delete({ where: { id } });
 
     revalidatePath("/");
 }
