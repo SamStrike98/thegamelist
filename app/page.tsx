@@ -5,11 +5,13 @@ import { auth } from "@/auth";
 import LoginGoogle from "@/components/LoginGoogle";
 // import Image from "next/image";
 
-export default async function Home({ searchParams }: { searchParams: { search?: string, platform?: string } }) {
+export default async function Home({ searchParams }: { searchParams: Record<string, any> }) {
   const session = await auth()
+  const currSearchParams = await searchParams;
 
-  const searchQuery = searchParams.search || "";
-  const platformFilter = searchParams.platform || "";
+
+  const searchQuery = currSearchParams.search || "";
+  const platformFilter = currSearchParams.platform || "";
 
 
   const games = await getGames(searchQuery, platformFilter);
