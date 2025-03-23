@@ -14,11 +14,11 @@ interface SearchParams {
 // Updated async component
 export default async function Home({ searchParams }: { searchParams: SearchParams }) {
   const session = await auth();
-  const currSearchParams = await searchParams;
+  // const currSearchParams = await searchParams;
 
   // Properly handling the searchParams asynchronously
-  const searchQuery = currSearchParams?.search ?? '';
-  const platformFilter = currSearchParams?.platform ?? '';
+  const searchQuery = searchParams?.search ?? '';
+  const platformFilter = searchParams?.platform ?? '';
 
   const games = await getGames(searchQuery, platformFilter);
 
