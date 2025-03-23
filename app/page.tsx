@@ -7,20 +7,19 @@ import LoginGoogle from "@/components/LoginGoogle";
 
 // Defining SearchParams interface
 interface SearchParams {
-  search?: string;
-  platform?: string;
+  searchParams: Promise<{ search?: string, platform?: string }>;
 }
 
 // Updated async component
-export default async function Home({ searchParams }: { searchParams: SearchParams }) {
+export default async function Home({ searchParams }: SearchParams) {
   const session = await auth();
-  // const currSearchParams = await searchParams;
+  const {search, platform} = await searchParams;
 
   // Properly handling the searchParams asynchronously
-  const searchQuery = searchParams?.search ?? '';
-  const platformFilter = searchParams?.platform ?? '';
+  // const searchQuery = currSearchParams?.search ?? '';
+  // const platformFilter = currSearchParams?.platform ?? '';
 
-  const games = await getGames(searchQuery, platformFilter);
+  const games = await getGames(search, platform);
 
   return (
     <main>
@@ -53,9 +52,9 @@ export default async function Home({ searchParams }: { searchParams: SearchParam
           type="text"
           name="search"
           placeholder="Search Games"
-          defaultValue={searchQuery}
+          defaultValue={search}
         />
-        <select className="select" name="platform" defaultValue={platformFilter}>
+        <select className="select" name="platform" defaultValue={platform}>
           <option value="">All Platforms</option>
           <option value="PC">PC</option>
           <option value="PS5">PS5</option>
